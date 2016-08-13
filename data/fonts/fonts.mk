@@ -21,7 +21,7 @@ FONTS_SYSTEM_PATH := system/fonts
 PRODUCT_COPY_FILES := \
     frameworks/base/data/fonts/system_fonts.xml:$(TARGET_COPY_OUT_SYSTEM)/etc/system_fonts.xml \
     frameworks/base/data/fonts/fallback_fonts.xml:$(TARGET_COPY_OUT_SYSTEM)/etc/fallback_fonts.xml \
-    frameworks/base/data/fonts/fonts.xml:$(TARGET_COPY_OUT_SYSTEM)/etc/fonts.xml \
+    frameworks/base/data/fonts/fonts.xml:$(TARGET_COPY_OUT_SYSTEM)/etc/fonts.xml
 
 PRODUCT_COPY_FILES += \
     $(FONTS_VENDOR_PATH)/SST-UltraLight.ttf:$(FONTS_SYSTEM_PATH)/SST-UltraLight.ttf \
