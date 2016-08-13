@@ -28,6 +28,7 @@
     androidprv:layout_maxWidth="@dimen/keyguard_security_width"
     androidprv:layout_maxHeight="@dimen/keyguard_security_height"
     android:gravity="center_horizontal|top">
+
     <LinearLayout
         android:id="@+id/keyguard_clock_container"
         android:layout_width="match_parent"
@@ -35,17 +36,24 @@
         android:layout_gravity="center_horizontal|top"
         android:orientation="vertical" >
 
+        <LinearLayout
+            android:orientation="vertical"
+            android:id="@+id/somc_keyguard_digital_clock_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/somc_digital_clock_container_margin_top">
+
         <TextClock
             android:id="@+id/clock_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:textColor="@color/clock_white"
+            android:layout_centerHorizontal="true"
+            android:textColor="@color/somc_keyguard_theme_color_digital_clock"
             android:singleLine="true"
-            style="@style/widget_big_thin"
+            style="@style/somc_digital_clock_hours_minutes_text_style"
             android:format12Hour="@string/keyguard_widget_12_hours_format"
             android:format24Hour="@string/keyguard_widget_24_hours_format"
-            android:layout_marginBottom="@dimen/bottom_text_spacing_digital" />
+            android:layout_marginBottom="@dimen/somc_digital_clock_text_margin_bottom" />
 
         <include layout="@layout/keyguard_status_area" />
 
@@ -61,6 +69,8 @@
             android:singleLine="true"
             android:visibility="gone"/>
 
+        </LinearLayout>
+
         <TextView
             android:id="@+id/owner_info"
             android:layout_marginLeft="16dp"
@@ -69,7 +79,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/date_owner_info_margin"
             android:layout_gravity="center_horizontal"
-            android:textColor="@color/clock_gray"
+            android:textColor="@color/somc_keyguard_theme_color_solid_foreground"
             android:textSize="@dimen/widget_label_font_size"
             android:letterSpacing="0.05"
             android:ellipsize="marquee"

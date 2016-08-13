@@ -16,4 +16,10 @@
 <resources>
 
     <color name="keyguard_sim_view_divider">#28FFFFFF</color>
+
+    <!-- Sony dimens -->
+    <color name="somc_keyguard_theme_color_digital_clock">@color/somc_keyguard_theme_color_solid_foreground</color>
+    <color name="somc_keyguard_theme_color_solid_foreground">#FFFFFFFF</color>
+    <color name="somc_keyguard_theme_color_digital_clock_alarm_icon">@color/somc_keyguard_theme_color_solid_foreground</color>
+
 </resources>

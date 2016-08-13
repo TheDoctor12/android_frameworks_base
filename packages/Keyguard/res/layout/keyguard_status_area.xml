@@ -21,30 +21,32 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:androidprv="http://schemas.android.com/apk/res-auto"
+    android:gravity="center"
+    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="horizontal"
-    android:gravity="center">
-    <TextClock android:id="@+id/date_view"
+    android:layout_height="wrap_content">  
+    <TextClock 
+        android:id="@+id/date_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="@color/clock_white"
-        style="@style/widget_label"
-        android:textAllCaps="true"
-        android:letterSpacing="0.15"
+        android:textColor="@color/somc_keyguard_theme_color_digital_clock"
         android:gravity="center"
-        />
-    <TextView android:id="@+id/alarm_status"
+        android:textAllCaps="false"
+        android:letterSpacing="0.0"
+        style="@style/somc_digital_clock_date_text_style"
+        />		
+    <TextView 
+        android:id="@+id/alarm_status"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:drawablePadding="6dp"
-        android:drawableStart="@drawable/ic_access_alarms_big"
-        android:textColor="@color/clock_gray"
-        android:letterSpacing="0.15"
-        android:textAllCaps="true"
-        style="@style/widget_label"
         android:layout_marginStart="6dp"
         android:gravity="center"
         android:visibility="gone"
-        />
+        android:textColor="@color/somc_keyguard_theme_color_digital_clock"
+        android:textAllCaps="false"
+        android:drawableStart="@drawable/somc_digital_clock_alarm_icon"
+        android:letterSpacing="0.0"
+        style="@style/somc_digital_clock_alarm_text_style"
+        />		
 </LinearLayout>
