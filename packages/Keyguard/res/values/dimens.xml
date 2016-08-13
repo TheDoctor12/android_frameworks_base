@@ -57,4 +57,11 @@
 
     <!-- The translation for disappearing security views after having solved them. -->
     <dimen name="disappear_y_translation">-32dp</dimen>
+
+    <!-- Sony dimens -->
+    <dimen name="somc_digital_clock_alarm_padding_top">2dp</dimen>
+    <dimen name="somc_digital_clock_date_padding_top">2dp</dimen>
+    <dimen name="somc_digital_clock_font_size">70dp</dimen>
+    <dimen name="somc_digital_clock_container_margin_top">9dp</dimen>
+    <dimen name="somc_digital_clock_text_margin_bottom">-4dp</dimen>
 </resources>
