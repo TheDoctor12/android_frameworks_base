@@ -57,4 +57,12 @@
 
     <!-- The translation for disappearing security views after having solved them. -->
     <dimen name="disappear_y_translation">-32dp</dimen>
+
+    <!-- Sony dimens -->
+    <dimen name="somc_sony_clock_hour_digit_size">156dp</dimen>
+    <dimen name="sony_clock_hour_digit_bottom_margin">-32dp</dimen>
+    <dimen name="sony_clock_hour_digit_top_margin">-36dp</dimen>
+    <dimen name="sony_clock_minute_digit_bottom_margin">-24dp</dimen>
+    <dimen name="sony_clock_minute_digit_top_margin">-36dp</dimen>
+    <dimen name="sony_clock_date_digit_top_margin">-4dp</dimen>
 </resources>

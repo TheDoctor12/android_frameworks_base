@@ -55,5 +55,22 @@
 
     <style name="keyguard_presentation_theme" parent="@android:style/Theme.Material.NoActionBar.Fullscreen">
     </style>
+    <!-- Sony styles -->
+    <style name="SonyClockBaseStyle" parent="@android:style/TextAppearance.Material.Body1">
+        <item name="android:textStyle">normal</item>
+    </style>
+    <style name="somc_sony_clock_hour_style" parent="@style/SonyClockBaseStyle">
+        <item name="android:textSize">@dimen/somc_sony_clock_hour_digit_size</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:fontFamily">x-sst-light</item>
+    </style>
+    <style name="somc_sony_clock_date_style" parent="@style/SonyClockBaseStyle">
+        <item name="android:maxLines">1</item>
+        <item name="android:fontFamily">sans-serif</item>
+    </style>
+    <style name="somc_sony_clock_alarm_style" parent="@style/SonyClockBaseStyle">
+        <item name="android:maxLines">1</item>
+        <item name="android:fontFamily">sans-serif</item>
+    </style>
 
 </resources>
