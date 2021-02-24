@@ -6000,4 +6000,7 @@
   <java-symbol type="string" name="fingerprint_frr_notification_title" />
   <java-symbol type="string" name="fingerprint_frr_notification_msg" />
 
+  <!-- Location indicator -->
+  <java-symbol type="drawable" name="stat_sys_location" />
+
 </resources>
