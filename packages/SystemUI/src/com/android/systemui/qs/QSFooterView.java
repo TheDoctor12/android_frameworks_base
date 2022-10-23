@@ -71,6 +71,8 @@ public class QSFooterView extends FrameLayout {
     private float mExpansionAmount;
 
     private boolean mShouldShowUsageText;
+    private boolean mShouldShowSuffix;
+    private boolean mForceShowSuffix;
 
     @Nullable
     private OnClickListener mExpandClickListener;
@@ -108,6 +110,11 @@ public class QSFooterView extends FrameLayout {
         setImportantForAccessibility(IMPORTANT_FOR_ACCESSIBILITY_YES);
         setUsageText();
         //setBuildText();
+
+        mUsageText.setOnClickListener(v -> {
+            mForceShowSuffix = !mForceShowSuffix;
+            setUsageText();
+        });
     }
 
     private void setUsageText() {
@@ -138,17 +145,22 @@ public class QSFooterView extends FrameLayout {
             return;
         }
         mShouldShowUsageText = true;
-        mUsageText.setText(formatDataUsage(info.usageLevel) + " " +
-                mContext.getResources().getString(R.string.usage_data) +
-                " (" + suffix + ")");
+        mUsageText.setText(formatDataUsage(info.usageLevel, suffix));
         updateVisibilities();
     }
 
-    private CharSequence formatDataUsage(long byteValue) {
+    private CharSequence formatDataUsage(long byteValue, String suffix) {
         final BytesResult res = Formatter.formatBytes(mContext.getResources(), byteValue,
                 Formatter.FLAG_IEC_UNITS);
-        return BidiFormatter.getInstance().unicodeWrap(mContext.getString(
-                com.android.internal.R.string.fileSizeSuffix, res.value, res.units));
+        // Example: 1.23 GB used today
+        String usage = BidiFormatter.getInstance().unicodeWrap(mContext.getString(
+                com.android.internal.R.string.fileSizeSuffix, res.value, res.units))
+                + " " + mContext.getString(R.string.usage_data);
+        if (mShouldShowSuffix ^ mForceShowSuffix) {
+            // Example: 1.23 GB used today (airtel)
+            usage += " (" + suffix + ")";
+        }
+        return usage;
     }
 
     private String getSlotCarrierName() {
@@ -192,6 +204,13 @@ public class QSFooterView extends FrameLayout {
     protected void setNoSims(boolean hasNoSims) {
         if (mHasNoSims != hasNoSims) {
             mHasNoSims = hasNoSims;
+            setUsageText();
+        }
+    }
+
+    protected void setShowSuffix(boolean show) {
+        if (mShouldShowSuffix != show) {
+            mShouldShowSuffix = show;
             setUsageText();
         }
     }
@@ -267,14 +286,10 @@ public class QSFooterView extends FrameLayout {
 
         if (mUsageText == null) return;
         if (headerExpansionFraction == 1.0f) {
-            mUsageText.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    mUsageText.setSelected(true);
-                }
-            }, 1000);
-        } else {
+            postDelayed(() -> mUsageText.setSelected(true), 1000);
+        } else if (headerExpansionFraction == 0.0f) {
             mUsageText.setSelected(false);
+            mForceShowSuffix = false;
         }
     }
 
