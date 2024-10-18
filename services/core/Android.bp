@@ -206,7 +206,6 @@ java_library_static {
         "android.security.aaid_aidl-java",
         "netd-client",
         "overlayable_policy_aidl-java",
-        "SurfaceFlingerProperties",
         "com.android.sysprop.watchdog",
         "securebox",
         "vendor.qti.hardware.servicetracker-V1.0-java",
@@ -231,6 +230,7 @@ java_library_static {
         "dreams_flags_lib",
         "aconfig_new_storage_flags_lib",
         "powerstats_flags_lib",
+        "vendor.aac.hardware.richtap.vibrator",
     ],
     javac_shard_size: 50,
     javacflags: [

@@ -339,7 +339,7 @@
     <dimen name="keyguard_indication_bottom_padding">16sp</dimen>
 
     <!-- The padding at start and end of indication text shown on AOD -->
-    <dimen name="keyguard_indication_text_padding">16dp</dimen>
+    <dimen name="keyguard_indication_text_padding">12dp</dimen>
 
     <!-- The min height on the indication text shown on AOD -->
     <dimen name="keyguard_indication_text_min_height">48dp</dimen>
@@ -1107,7 +1107,7 @@
     <dimen name="biometric_dialog_fingerprint_icon_height">100dp</dimen>
     <dimen name="biometric_dialog_button_negative_max_width">160dp</dimen>
     <dimen name="biometric_dialog_button_positive_max_width">136dp</dimen>
-    <dimen name="biometric_dialog_corner_size">28dp</dimen>
+    <dimen name="biometric_dialog_corner_size">@*android:dimen/config_dialogCornerRadius</dimen>
     <dimen name="biometric_dialog_indicator_max_width">280dp</dimen>
     <!-- Y translation when showing/dismissing the dialog-->
     <dimen name="biometric_dialog_animation_translation_offset">350dp</dimen>
@@ -1192,7 +1192,7 @@
 
     <!--  Blur radius on status bar window and power menu  -->
     <dimen name="min_window_blur_radius">1px</dimen>
-    <dimen name="max_window_blur_radius">23px</dimen>
+    <dimen name="max_window_blur_radius">17.5dp</dimen>
 
     <!-- How much into a DisplayCutout's bounds we can go, on each side -->
     <dimen name="display_cutout_margin_consumption">0px</dimen>
@@ -1676,9 +1676,6 @@
     <dimen name="rounded_slider_icon_inset">14dp</dimen>
     <!-- rounded_slider_corner_radius - rounded_slider_track_corner_radius -->
     <dimen name="rounded_slider_track_inset">22dp</dimen>
-    <dimen name="rounded_slider_track_width">4dp</dimen>
-    <!-- rounded_slider_track_width / 2 -->
-    <dimen name="rounded_slider_track_corner_radius">2dp</dimen>
     <dimen name="rounded_slider_background_padding">8dp</dimen>
     <!-- rounded_slider_corner_radius + rounded_slider_background_padding -->
     <dimen name="rounded_slider_background_rounded_corner">32dp</dimen>

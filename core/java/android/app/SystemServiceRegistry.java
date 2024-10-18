@@ -107,7 +107,9 @@ import android.hardware.biometrics.IAuthService;
 import android.hardware.camera2.CameraManager;
 import android.hardware.devicestate.DeviceStateManager;
 import android.hardware.display.ColorDisplayManager;
+import android.hardware.display.DcDimmingManager;
 import android.hardware.display.DisplayManager;
+import android.hardware.display.IDcDimmingManager;
 import android.hardware.face.FaceManager;
 import android.hardware.face.IFaceService;
 import android.hardware.fingerprint.FingerprintManager;
@@ -237,7 +239,6 @@ import android.telephony.MmsManager;
 import android.telephony.TelephonyFrameworkInitializer;
 import android.telephony.TelephonyRegistryManager;
 import android.transparency.BinaryTransparencyManager;
-import android.util.ArrayMap;
 import android.util.Log;
 import android.util.Slog;
 import android.uwb.UwbFrameworkInitializer;
@@ -272,6 +273,7 @@ import com.android.internal.os.IDropBoxManagerService;
 import com.android.internal.policy.PhoneLayoutInflater;
 import com.android.internal.util.Preconditions;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
@@ -313,10 +315,10 @@ public final class SystemServiceRegistry {
     // Service registry information.
     // This information is never changed once static initialization has completed.
     private static final Map<Class<?>, String> SYSTEM_SERVICE_NAMES =
-            new ArrayMap<Class<?>, String>();
+            new HashMap<Class<?>, String>();
     private static final Map<String, ServiceFetcher<?>> SYSTEM_SERVICE_FETCHERS =
-            new ArrayMap<String, ServiceFetcher<?>>();
-    private static final Map<String, String> SYSTEM_SERVICE_CLASS_NAMES = new ArrayMap<>();
+            new HashMap<String, ServiceFetcher<?>>();
+    private static final Map<String, String> SYSTEM_SERVICE_CLASS_NAMES = new HashMap<>();
 
     private static int sServiceCacheSize;
 
@@ -1028,6 +1030,19 @@ public final class SystemServiceRegistry {
                         return new TvAdManager(service, ctx.getUserId());
                     }});
 
+        registerService(Context.DC_DIM_SERVICE, DcDimmingManager.class,
+                new CachedServiceFetcher<DcDimmingManager>() {
+                    @Override
+                    public DcDimmingManager createService(ContextImpl ctx) throws ServiceNotFoundException {
+                        if (Resources.getSystem().getString(
+                                com.android.internal.R.string.config_deviceDcDimmingSysfsNode).isEmpty()) {
+                            return null;
+                        }
+                        IBinder b = ServiceManager.getServiceOrThrow(Context.DC_DIM_SERVICE);
+                        IDcDimmingManager service = IDcDimmingManager.Stub.asInterface(b);
+                        return new DcDimmingManager(service);
+                    }});
+
         registerService(Context.TV_INPUT_SERVICE, TvInputManager.class,
                 new CachedServiceFetcher<TvInputManager>() {
             @Override
@@ -1084,7 +1099,7 @@ public final class SystemServiceRegistry {
                 new StaticServiceFetcher<OemLockManager>() {
             @Override
             public OemLockManager createService() throws ServiceNotFoundException {
-                IBinder b = ServiceManager.getServiceOrThrow(Context.OEM_LOCK_SERVICE);
+                IBinder b = ServiceManager.getService(Context.OEM_LOCK_SERVICE);
                 IOemLockService oemLockService = IOemLockService.Stub.asInterface(b);
                 if (oemLockService != null) {
                     return new OemLockManager(oemLockService);

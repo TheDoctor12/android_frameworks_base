@@ -83,7 +83,6 @@ public class SecureSettings {
         Settings.Secure.MOUNT_UMS_AUTOSTART,
         Settings.Secure.MOUNT_UMS_PROMPT,
         Settings.Secure.MOUNT_UMS_NOTIFY_ENABLED,
-        Settings.Secure.DOUBLE_TAP_TO_WAKE,
         Settings.Secure.WAKE_GESTURE_ENABLED,
         Settings.Secure.LONG_PRESS_TIMEOUT,
         Settings.Secure.KEY_REPEAT_TIMEOUT_MS,
@@ -280,5 +279,8 @@ public class SecureSettings {
         Settings.Secure.ON_DEVICE_INTELLIGENCE_UNBIND_TIMEOUT_MS,
         Settings.Secure.ON_DEVICE_INFERENCE_UNBIND_TIMEOUT_MS,
         Settings.Secure.ON_DEVICE_INTELLIGENCE_IDLE_TIMEOUT_MS,
+        Settings.Secure.DOZE_PICK_UP_GESTURE_AMBIENT,
+        Settings.Secure.DOZE_TAP_GESTURE_AMBIENT,
+        Settings.Secure.DOZE_ON_CHARGE
     };
 }

@@ -3670,6 +3670,7 @@
         <item>lockdown</item>
         <item>power</item>
         <item>restart</item>
+        <item>recovery</item>
         <item>logout</item>
         <item>screenshot</item>
         <item>bugreport</item>
@@ -4030,9 +4031,6 @@
 
     <!-- This config is ued to determine whether animations are allowed in low power mode. -->
     <bool name="config_allowAnimationsInLowPowerMode">false</bool>
-
-    <!-- Whether device supports double tap to wake -->
-    <bool name="config_supportDoubleTapWake">false</bool>
 
     <!-- The RadioAccessFamilies supported by the device.
          Empty is viewed as "all".  Only used on devices which

@@ -21,4 +21,109 @@
     <java-symbol type="array" name="config_globallyDisabledComponents" />
     <java-symbol type="array" name="config_forceEnabledComponents" />
 
+    <!-- Whether to use Richtap vibration -->
+    <java-symbol type="bool" name="config_usesRichtapVibration" />
+
+    <!-- Alert Slider -->
+    <java-symbol type="string" name="alert_slider_state_path" />
+    <java-symbol type="string" name="alert_slider_uevent_match_path" />
+    <java-symbol type="bool" name="config_hasAlertSlider" />
+
+    <!-- Device key handlers -->
+    <java-symbol type="array" name="config_deviceKeyHandlerLibs" />
+    <java-symbol type="array" name="config_deviceKeyHandlerClasses" />
+
+    <!-- Gestures Settings -->
+    <java-symbol type="integer" name="config_doubleTapKeyCode" />
+    <java-symbol type="integer" name="config_singleTapKeyCode" />
+    <java-symbol type="integer" name="config_drawVKeyCode" />
+    <java-symbol type="integer" name="config_drawInverseVKeyCode" />
+    <java-symbol type="integer" name="config_drawOKeyCode" />
+    <java-symbol type="integer" name="config_drawMKeyCode" />
+    <java-symbol type="integer" name="config_drawWKeyCode" />
+    <java-symbol type="integer" name="config_drawSKeyCode" />
+    <java-symbol type="integer" name="config_drawArrowLeftKeyCode" />
+    <java-symbol type="integer" name="config_drawArrowRightKeyCode" />
+    <java-symbol type="integer" name="config_oneFingerSwipeUpKeyCode" />
+    <java-symbol type="integer" name="config_oneFingerSwipeRightKeyCode" />
+    <java-symbol type="integer" name="config_oneFingerSwipeDownKeyCode" />
+    <java-symbol type="integer" name="config_oneFingerSwipeLeftKeyCode" />
+    <java-symbol type="integer" name="config_twoFingerSwipeKeyCode" />
+
+    <java-symbol type="integer" name="config_doubleTapDefault" />
+    <java-symbol type="integer" name="config_singleTapDefault" />
+    <java-symbol type="integer" name="config_drawVDefault" />
+    <java-symbol type="integer" name="config_drawInverseVDefault" />
+    <java-symbol type="integer" name="config_drawODefault" />
+    <java-symbol type="integer" name="config_drawMDefault" />
+    <java-symbol type="integer" name="config_drawWDefault" />
+    <java-symbol type="integer" name="config_drawSDefault" />
+    <java-symbol type="integer" name="config_drawArrowLeftDefault" />
+    <java-symbol type="integer" name="config_drawArrowRightDefault" />
+    <java-symbol type="integer" name="config_oneFingerSwipeUpDefault" />
+    <java-symbol type="integer" name="config_oneFingerSwipeRightDefault" />
+    <java-symbol type="integer" name="config_oneFingerSwipeDownDefault" />
+    <java-symbol type="integer" name="config_oneFingerSwipeLeftDefault" />
+    <java-symbol type="integer" name="config_twoFingerSwipeDefault" />
+
+    <!-- Whether to to intercept inputs on screen off. -->
+    <java-symbol type="bool" name="config_enableKeyHandler" />
+
+    <!-- DC Dimming -->
+    <java-symbol type="string" name="config_deviceDcDimmingSysfsNode" />
+    <java-symbol type="string" name="config_deviceDcDimmingEnableValue" />
+    <java-symbol type="string" name="config_deviceDcDimmingDisableValue" />
+
+    <!-- Cycle through ringer modes -->
+    <java-symbol type="string" name="volume_dialog_ringer_guidance_normal" />
+
+    <!-- Health interface -->
+    <java-symbol type="bool" name="config_chargingControlEnabled" />
+    <java-symbol type="integer" name="config_defaultChargingControlMode" />
+    <java-symbol type="integer" name="config_defaultChargingControlStartTime" />
+    <java-symbol type="integer" name="config_defaultChargingControlTargetTime" />
+    <java-symbol type="integer" name="config_defaultChargingControlLimit" />
+    <java-symbol type="drawable" name="ic_charging_control" />
+    <java-symbol type="integer" name="config_chargingControlTimeMargin" />
+    <java-symbol type="integer" name="config_chargingControlBatteryRechargeMargin" />
+    <java-symbol type="string" name="charging_control_notification_channel" />
+    <java-symbol type="string" name="charging_control_notification_title" />
+    <java-symbol type="string" name="charging_control_notification_cancel_once" />
+    <java-symbol type="string" name="charging_control_notification_content_limit" />
+    <java-symbol type="string" name="charging_control_notification_content_limit_reached" />
+    <java-symbol type="string" name="charging_control_notification_content_target" />
+    <java-symbol type="string" name="charging_control_notification_content_target_reached" />
+
+    <!-- Enforce DisplayModeDirector to select user preferred resolution -->
+    <java-symbol type="bool" name="config_forceToUseSelectedResolution" />
+
+    <!-- Status bar network traffic monitor -->
+    <java-symbol type="drawable" name="stat_sys_network_traffic_down" />
+    <java-symbol type="drawable" name="stat_sys_network_traffic_up" />
+    <java-symbol type="drawable" name="stat_sys_network_traffic_updown" />
+    <java-symbol type="dimen" name="net_traffic_single_text_size" />
+    <java-symbol type="dimen" name="net_traffic_multi_text_size" />
+    <java-symbol type="string" name="kilobitspersecond_short" />
+    <java-symbol type="string" name="megabitspersecond_short" />
+    <java-symbol type="string" name="kilobytespersecond_short" />
+    <java-symbol type="string" name="megabytespersecond_short" />
+    <java-symbol type="string" name="kilobytespersecond_compact" />
+    <java-symbol type="string" name="megabytespersecond_compact" />
+
+    <!-- Path to fast charging status file to detect whether an oem fast charger is active -->
+    <java-symbol type="string" name="config_oemFastChargerStatusPath" />
+
+    <!-- Expected value from fast charging status file -->
+    <java-symbol type="string" name="config_oemFastChargerStatusValue" />
+
+    <!-- Boost Framework -->
+    <java-symbol type="bool" name="config_supportsBoostFramework" />
+
+    <!-- Status bar DT2S gesture -->
+    <java-symbol type="bool" name="config_dt2sGestureAvailable" />
+    <java-symbol type="bool" name="config_dt2sGestureEnabledByDefault" />
+
+    <!-- Whether to show WiFi/Hotspot standard -->
+    <java-symbol type="bool" name="config_show_network_standard" />
+
 </resources>

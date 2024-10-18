@@ -24,7 +24,8 @@ import android.graphics.drawable.LayerDrawable;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.FrameLayout;
+import android.widget.CompoundButton;
+import android.widget.LinearLayout;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 
 import androidx.annotation.Keep;
@@ -40,14 +41,19 @@ import java.util.Collections;
  * {@code FrameLayout} used to show and manipulate a {@link ToggleSeekBar}.
  *
  */
-public class BrightnessSliderView extends FrameLayout {
+public class BrightnessSliderView extends LinearLayout {
 
     @NonNull
     private ToggleSeekBar mSlider;
+    @Nullable
+    private ToggleIconView mToggle;
+    private CompoundButton.OnCheckedChangeListener mToggleListener;
     private DispatchTouchEventListener mListener;
     private Gefingerpoken mOnInterceptListener;
     @Nullable
     private Drawable mProgressDrawable;
+    @Nullable
+    private Drawable mToggleBgDrawable;
     private float mScale = 1f;
     private final Rect mSystemGestureExclusionRect = new Rect();
 
@@ -92,6 +98,15 @@ public class BrightnessSliderView extends FrameLayout {
         setPadding(offset,  offset, offset,  offset);
     }
 
+    @Override
+    public void onViewAdded(View child) {
+        super.onViewAdded(child);
+        if (mToggle == null) {
+            mToggle = findViewById(R.id.toggle);
+            mToggleBgDrawable = mToggle != null ? mToggle.getBackground() : null;
+        }
+    }
+
     /**
      * Attaches a listener to relay touch events.
      * @param listener use {@code null} to remove listener
@@ -127,12 +142,30 @@ public class BrightnessSliderView extends FrameLayout {
     }
 
     /**
+     * Attaches a listener to the toggle
+     * @param checkedListener use {@code null} to remove listener
+     * @return whether the listener was set
+     */
+    public boolean setOnCheckedChangeListener(CompoundButton.OnCheckedChangeListener checkedListener) {
+        if (mToggle != null) {
+            mToggleListener = checkedListener;
+            mToggle.setOnCheckedChangeListener(checkedListener);
+            return true;
+        }
+        return false;
+    }
+
+    /**
      * Enforces admin rules for toggling auto-brightness and changing value of brightness
      * @param admin
      * @see ToggleSeekBar#setEnforcedAdmin
+     * @see ToggleIconView#setEnforcedAdmin
      */
     void setAdminBlocker(ToggleSeekBar.AdminBlocker blocker) {
         mSlider.setAdminBlocker(blocker);
+        if (mToggle != null) {
+            mToggle.setEnabled(blocker == null);
+        }
     }
 
     /**
@@ -171,6 +204,29 @@ public class BrightnessSliderView extends FrameLayout {
      */
     public int getValue() {
         return mSlider.getProgress();
+    }
+
+    /**
+     * Sets the current value of the toggle
+     * @param checked
+     */
+    public void setToggleValue(boolean checked) {
+        if (mToggle != null) {
+            // Avoid endless loops
+            mToggle.setOnCheckedChangeListener(null);
+            mToggle.setChecked(checked);
+            mToggle.setOnCheckedChangeListener(mToggleListener);
+        }
+    }
+
+    /**
+     * @return the current value of the toggle
+     */
+    public boolean getToggleValue() {
+        if (mToggle != null) {
+            return mToggle.isChecked();
+        }
+        return false;
     }
 
     public void setOnInterceptListener(Gefingerpoken onInterceptListener) {
@@ -217,6 +273,11 @@ public class BrightnessSliderView extends FrameLayout {
             int height = (int) (mProgressDrawable.getIntrinsicHeight() * mScale);
             int inset = (mProgressDrawable.getIntrinsicHeight() - height) / 2;
             mProgressDrawable.setBounds(r.left, inset, r.right, inset + height);
+            if (mToggleBgDrawable != null) {
+                final Rect rToggle = mToggleBgDrawable.getBounds();
+                // The slider & toggle share the same height
+                mToggleBgDrawable.setBounds(rToggle.left, inset, rToggle.right, inset + height);
+            }
         }
     }
 

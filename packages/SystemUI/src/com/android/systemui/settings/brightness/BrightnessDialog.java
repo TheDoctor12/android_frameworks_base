@@ -163,7 +163,6 @@ public class BrightnessDialog extends Activity {
         }
 
         frame.setLayoutParams(lp);
-
     }
 
     @Override

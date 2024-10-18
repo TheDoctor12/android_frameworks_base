@@ -19,12 +19,18 @@ import android.annotation.NonNull;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.res.Resources;
+import android.view.CrossWindowBlurListeners;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ListAdapter;
+
+import com.android.systemui.statusbar.BlurUtils;
+import com.android.systemui.dump.DumpManager;
+
+import androidx.constraintlayout.helper.widget.Flow;
 
 /**
  * Creates a customized Dialog for displaying the Shut Down and Restart actions.
@@ -45,9 +51,13 @@ public class GlobalActionsPowerDialog {
 
         Resources res = context.getResources();
 
-        Dialog dialog = new Dialog(context);
+        Dialog dialog = new Dialog(context,
+                com.android.systemui.res.R.style.Theme_SystemUI_Dialog_GlobalActionsLite);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(listView);
+
+        BlurUtils blurUtils = new BlurUtils(context.getResources(),
+                CrossWindowBlurListeners.getInstance(), new DumpManager());
 
         Window window = dialog.getWindow();
         window.setType(WindowManager.LayoutParams.TYPE_VOLUME_OVERLAY);
@@ -55,6 +65,18 @@ public class GlobalActionsPowerDialog {
         window.setBackgroundDrawable(res.getDrawable(
                 com.android.systemui.res.R.drawable.control_background, context.getTheme()));
         window.addFlags(WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM);
+        if (blurUtils.supportsBlursOnWindows()) {
+            // Enable blur behind
+            // Enable dim behind since we are setting some amount dim for the blur.
+            window.addFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND
+                    | WindowManager.LayoutParams.FLAG_DIM_BEHIND);
+            // Set blur behind radius
+            int blurBehindRadius = context.getResources()
+                    .getDimensionPixelSize(com.android.systemui.res.R.dimen.max_window_blur_radius);
+            window.getAttributes().setBlurBehindRadius(blurBehindRadius);
+            // Set dim only when blur is enabled.
+            window.setDimAmount(0.54f);
+        }
 
         return dialog;
     }

@@ -906,6 +906,8 @@ public class PackageManagerService implements PackageSender, TestUtilityService 
 
     private final PackageProperty mPackageProperty = new PackageProperty();
 
+    ArrayList<ComponentName> mDisabledComponentsList;
+
     final PendingPackageBroadcasts mPendingBroadcasts;
 
     ArrayList<ComponentName> mDisabledComponentsList;
@@ -2241,7 +2243,8 @@ public class PackageManagerService implements PackageSender, TestUtilityService 
             if (mIsUpgrade) {
                 PackageManagerServiceUtils.logCriticalInfo(Log.INFO,
                         "Upgrading from " + ver.fingerprint + " (" + ver.buildFingerprint + ") to "
-                                + PackagePartitions.FINGERPRINT + " (" + Build.FINGERPRINT + ")");
+                                + PackagePartitions.FINGERPRINT
+                                + " (" + Build.VERSION.INCREMENTAL + ")");
             }
             mPriorSdkVersion = mIsUpgrade ? ver.sdkVersion : -1;
             mInitAppsHelper = new InitAppsHelper(this, mApexManager, mInstallPackageHelper,
@@ -2410,12 +2413,26 @@ public class PackageManagerService implements PackageSender, TestUtilityService 
                                         | Installer.FLAG_CLEAR_APP_DATA_KEEP_ART_PROFILES);
                     }
                 }
-                ver.buildFingerprint = Build.FINGERPRINT;
+                ver.buildFingerprint = Build.VERSION.INCREMENTAL;
                 ver.fingerprint = PackagePartitions.FINGERPRINT;
             }
 
             // Defer the app data fixup until we are done with app data clearing above.
             mPrepareAppDataFuture = mAppDataHelper.fixAppsDataOnBoot();
+
+            // Disable components marked for disabling at build-time
+            mDisabledComponentsList = new ArrayList<ComponentName>();
+            enableComponents(mContext.getResources().getStringArray(
+                     com.android.internal.R.array.config_deviceDisabledComponents),
+                     false);
+            enableComponents(mContext.getResources().getStringArray(
+                    com.android.internal.R.array.config_globallyDisabledComponents),
+                    false);
+
+            // Enable components marked for forced-enable at build-time
+            enableComponents(mContext.getResources().getStringArray(
+                    com.android.internal.R.array.config_forceEnabledComponents),
+                    true);
 
             // Legacy existing (installed before Q) non-system apps to hide
             // their icons in launcher.
@@ -3874,6 +3891,14 @@ public class PackageManagerService implements PackageSender, TestUtilityService 
         final int targetSize = settings.size();
         for (int i = 0; i < targetSize; i++) {
             final int newState = settings.get(i).getEnabledState();
+            if (settings.get(i).isComponent()) {
+                // Don't allow to enable components marked for disabling at build-time
+                if (mDisabledComponentsList.contains(settings.get(i).getComponentName())) {
+                    Slog.d(TAG, "Ignoring attempt to set enabled state of disabled component "
+                        + settings.get(i).getComponentName().flattenToString());
+                    return;
+                }
+            }
             if (!(newState == COMPONENT_ENABLED_STATE_DEFAULT
                     || newState == COMPONENT_ENABLED_STATE_ENABLED
                     || newState == COMPONENT_ENABLED_STATE_DISABLED

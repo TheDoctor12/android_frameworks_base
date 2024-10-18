@@ -23,10 +23,12 @@ import static android.os.BatteryManager.CHARGING_POLICY_DEFAULT;
 import static android.os.BatteryManager.EXTRA_CHARGING_STATUS;
 import static android.os.BatteryManager.EXTRA_MAX_CHARGING_CURRENT;
 import static android.os.BatteryManager.EXTRA_MAX_CHARGING_VOLTAGE;
+import static android.os.BatteryManager.EXTRA_TEMPERATURE;
 import static android.os.BatteryManager.EXTRA_PLUGGED;
 import static android.os.BatteryManager.EXTRA_PRESENT;
 import static android.os.BatteryManager.EXTRA_STATUS;
 import static android.os.OsProtoEnums.BATTERY_PLUGGED_NONE;
+import static android.os.BatteryManager.EXTRA_OEM_FAST_CHARGER;
 
 import android.content.Context;
 import android.content.Intent;
@@ -55,10 +57,14 @@ public class BatteryStatus {
     public final int status;
     public final int level;
     public final int plugged;
+    public final int maxChargingCurrent;
+    public final int maxChargingVoltage;
     public final int chargingStatus;
     public final int maxChargingWattage;
+    public final boolean oemFastChargeStatus;
     public final boolean present;
     public final Optional<Boolean> incompatibleCharger;
+    public final float temperature;
 
     public static BatteryStatus create(Context context, boolean incompatibleCharger) {
         final Intent batteryChangedIntent = BatteryUtils.getBatteryIntent(context);
@@ -67,14 +73,19 @@ public class BatteryStatus {
     }
 
     public BatteryStatus(int status, int level, int plugged, int chargingStatus,
-            int maxChargingWattage, boolean present) {
+            int maxChargingWattage, boolean oemFastChargeStatus, boolean present, int maxChargingCurrent, int maxChargingVoltage,
+            float temperature) {
         this.status = status;
         this.level = level;
         this.plugged = plugged;
         this.chargingStatus = chargingStatus;
+        this.maxChargingCurrent = maxChargingCurrent;
+        this.maxChargingVoltage = maxChargingVoltage;
         this.maxChargingWattage = maxChargingWattage;
+        this.oemFastChargeStatus = oemFastChargeStatus;
         this.present = present;
         this.incompatibleCharger = Optional.empty();
+        this.temperature = temperature;
     }
 
 
@@ -93,9 +104,30 @@ public class BatteryStatus {
         chargingStatus = batteryChangedIntent.getIntExtra(EXTRA_CHARGING_STATUS,
                 CHARGING_POLICY_DEFAULT);
         present = batteryChangedIntent.getBooleanExtra(EXTRA_PRESENT, true);
+	oemFastChargeStatus = batteryChangedIntent.getBooleanExtra(EXTRA_OEM_FAST_CHARGER, false);
+        temperature = batteryChangedIntent.getIntExtra(EXTRA_TEMPERATURE, -1);
+
         this.incompatibleCharger = incompatibleCharger;
 
-        maxChargingWattage = calculateMaxChargingMicroWatt(batteryChangedIntent);
+        final int maxChargingMicroAmp = batteryChangedIntent.getIntExtra(EXTRA_MAX_CHARGING_CURRENT,
+                -1);
+        int maxChargingMicroVolt = batteryChangedIntent.getIntExtra(EXTRA_MAX_CHARGING_VOLTAGE, -1);
+
+        if (maxChargingMicroVolt <= 0) {
+            maxChargingMicroVolt = DEFAULT_CHARGING_VOLTAGE_MICRO_VOLT;
+        }
+        if (maxChargingMicroAmp > 0) {
+            // Calculating muW = muA * muV / (10^6 mu^2 / mu); splitting up the divisor
+            // to maintain precision equally on both factors.
+            maxChargingWattage = (maxChargingMicroAmp / 1000)
+                    * (maxChargingMicroVolt / 1000);
+            maxChargingCurrent = maxChargingMicroAmp;
+            maxChargingVoltage = maxChargingMicroVolt;
+        } else {
+            maxChargingWattage = -1;
+            maxChargingCurrent = -1;
+            maxChargingVoltage = -1;
+        }
     }
 
     /** Determine whether the device is plugged. */
@@ -142,6 +174,9 @@ public class BatteryStatus {
 
     /** Return current charging speed is fast, slow or normal. */
     public final int getChargingSpeed(Context context) {
+        if (oemFastChargeStatus) {
+                return CHARGING_FAST;
+        }
         final int slowThreshold = context.getResources().getInteger(
                 R.integer.config_chargingSlowlyThreshold);
         final int fastThreshold = context.getResources().getInteger(
